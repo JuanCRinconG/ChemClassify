@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemClasify Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='EstilosCSS/styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <input
+                type="text"
+                id="accountName"
+                name="accountName"
+                class="input-field"
+                placeholder="Account Name"
+                value="{{ account_value }}"
+                autocomplete="username"
+            >
+            <input
+                type="password"
+                id="password"
+                name="password"
+                class="input-field"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        {% if error_message %}
+            <div class="error-message show">{{ error_message }}</div>
+        {% endif %}
+
+        {% if success_message %}
+            <div class="error-message show" style="color: #166e2d;">{{ success_message }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

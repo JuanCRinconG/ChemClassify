@@ -1,4 +1,4 @@
 CredencialesFirebase/
 node_modules/
-.venv/
-__pycache__/
+PGC_Enviroment/
+**/__pycache__/
