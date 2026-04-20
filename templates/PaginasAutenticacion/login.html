@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChemClasify Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='EstilosCSS/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Sistemas/alerta_error_usuario.css') }}">
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
 
-        <form method="POST" action="{{ url_for('login') }}">
+        <form method="POST" action="{{ url_for('login') }}" novalidate>
             <input
                 type="text"
                 id="accountName"
                 name="accountName"
                 class="input-field"
-                placeholder="Account Name"
+                placeholder="{{ ejemplo_correo }}"
                 value="{{ account_value }}"
                 autocomplete="username"
+                inputmode="email"
             >
             <input
                 type="password"
@@ -31,13 +33,14 @@
             <button type="submit" class="login-button">Login</button>
         </form>
 
-        {% if error_message %}
-            <div class="error-message show">{{ error_message }}</div>
-        {% endif %}
-
         {% if success_message %}
             <div class="error-message show" style="color: #166e2d;">{{ success_message }}</div>
         {% endif %}
     </div>
+
+    {% include 'Sistemas/fragmento_alerta_error.html' %}
+
+    <script type="application/json" id="sistemas-error-inicial-json">{{ error_message|tojson }}</script>
+    <script src="{{ url_for('static', filename='Sistemas/alerta_error_usuario.js') }}"></script>
 </body>
 </html>

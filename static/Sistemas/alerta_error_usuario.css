@@ -1,0 +1,91 @@
+/* Reusable orange warning dialog for user errors (Sistemas). */
+
+#sistemas-alerta-error-overlay[hidden] {
+    display: none !important;
+}
+
+#sistemas-alerta-error-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.45);
+    box-sizing: border-box;
+}
+
+.sistemas-alerta-error-caja {
+    max-width: 420px;
+    width: 100%;
+    background: #fff8f0;
+    border: 3px solid #e67e22;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    padding: 22px 20px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.sistemas-alerta-error-icono {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e67e22;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 44px;
+    text-align: center;
+    font-family: system-ui, sans-serif;
+}
+
+.sistemas-alerta-error-cuerpo {
+    flex: 1;
+    min-width: 0;
+}
+
+.sistemas-alerta-error-titulo {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #a84300;
+}
+
+.sistemas-alerta-error-texto {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #333;
+    word-break: break-word;
+}
+
+.sistemas-alerta-error-acciones {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sistemas-alerta-error-aceptar {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 25px;
+    background: #e67e22;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sistemas-alerta-error-aceptar:hover {
+    background: #d35400;
+}
+
+.sistemas-alerta-error-aceptar:focus {
+    outline: 2px solid #a84300;
+    outline-offset: 2px;
+}
