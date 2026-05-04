@@ -1,24 +1,24 @@
 """
-Central place for user-facing error text and template context.
+Lugar central para el texto de error y el contexto de las plantillas.
 
-Templates that use the shared orange alert should receive `error_message`
-(str or empty). Keep messages here so wording stays consistent app-wide.
+Plantillas que usan el alerta naranja compartido deben recibir `error_message`
+(str o vacío). Mantiene los mensajes aquí para que la redacción sea consistente en toda la aplicación.
 """
 
 from typing import Any, Dict, Optional
 
 
 class ManejadorErroresInterfaz:
-    """Builds standardized error strings and optional render_template context."""
+    """Construye cadenas de error estandarizadas y un contexto opcional para las plantillas."""
 
     # Login (auth form)
-    LOGIN_CUENTA_Y_CLAVE_VACIOS = 'Please enter both account name and password'
-    LOGIN_CUENTA_VACIA = 'Please enter an account name'
-    LOGIN_CLAVE_VACIA = 'Please enter a password'
+    LOGIN_CUENTA_Y_CLAVE_VACIOS = 'Por favor, ingresa ambos nombres de cuenta y contraseña'
+    LOGIN_CUENTA_VACIA = 'Por favor, ingresa un nombre de cuenta'
+    LOGIN_CLAVE_VACIA = 'Por favor, ingresa una contraseña'
 
     @classmethod
     def contexto_error(cls, mensaje: str, base: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Merge `error_message` into a template context dict."""
+        """Combina `error_message` en un diccionario de contexto para las plantillas."""
         ctx: Dict[str, Any] = dict(base or {})
         ctx['error_message'] = mensaje
         return ctx

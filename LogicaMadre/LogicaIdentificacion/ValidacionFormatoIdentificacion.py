@@ -51,9 +51,9 @@ def validar_identificador_cuenta(cuenta: str) -> Optional[str]:
 
 def contexto_validacion_correo_cliente() -> Dict[str, Any]:
     """
-    Rules for the browser to mirror validar_identificador_cuenta before Firebase Auth.
+    Reglas para la validacion de correo del cliente antes de Firebase Auth.
 
-    Keeps institutional checks off Firebase until the email format is allowed.
+    Mantiene las verificaciones institucionales fuera de Firebase hasta que el formato de correo sea permitido.
     """
     return {
         'ejemploCorreo': ejemplo_correo_institucional(),

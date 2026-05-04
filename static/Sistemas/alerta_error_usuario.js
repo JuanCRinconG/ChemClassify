@@ -63,7 +63,7 @@
             });
         }
 
-        // Server-rendered initial error: add in HTML (no Jinja inside .js files):
+        // Error inicial renderizado por el servidor: agrega en HTML (no Jinja dentro de los archivos .js):
         // <script type="application/json" id="sistemas-error-inicial-json">...</script>
         var jsonEl = document.getElementById('sistemas-error-inicial-json');
         if (jsonEl && window.SistemasErrores) {

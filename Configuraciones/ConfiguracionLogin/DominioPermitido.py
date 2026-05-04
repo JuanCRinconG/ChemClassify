@@ -18,17 +18,17 @@ PERMITIR_SUBDOMINIOS_DEL_DOMINIO = False
 
 
 def dominio_correo_normalizado() -> str:
-    """Lowercase domain without leading @."""
+    """dominio de correo en minusculas sin el @ al inicio."""
     return DOMINIO_CORREO_PERMITIDO.strip().lower().lstrip('@')
 
 
 def ejemplo_correo_institucional(parte_local: str = 'user') -> str:
-    """Sample address for UI hints and error messages."""
+    """ejemplo de correo para las sugerencias de la interfaz y los mensajes de error."""
     return f'{parte_local.strip()}@{dominio_correo_normalizado()}'
 
 
 def dominio_en_cuenta_es_permitido(dominio_tras_arroba: str) -> bool:
-    """True if the host part after @ is allowed (exact or subdomain when enabled)."""
+    """True si el dominio despues del @ es permitido (exacto o subdominio cuando esta habilitado)."""
     d = dominio_tras_arroba.strip().lower()
     permitido = dominio_correo_normalizado()
     if not d or not permitido:

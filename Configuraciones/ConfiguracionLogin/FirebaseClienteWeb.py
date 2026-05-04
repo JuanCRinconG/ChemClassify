@@ -12,7 +12,7 @@ from typing import Any, Dict
 
 
 def firebase_web_config_dict() -> Dict[str, Any]:
-    """Return the object passed to initializeApp() in the browser."""
+    """Retorna el objeto pasado a initializeApp() en el navegador."""
     cfg: Dict[str, Any] = {
         'apiKey': os.environ.get(
             'CHEMCLASSIFY_FIREBASE_API_KEY',

@@ -1,10 +1,10 @@
 /**
- * Firebase Auth on the login page: sign-in or create account, then POST idToken to Flask.
+ * Firebase Auth en la pagina de login: ingresa o crea cuenta, luego POST idToken a Flask.
  * Reads config from <script type="application/json" id="chem-firebase-config-json"> (Jinja tojson).
  *
- * Diagnosis: open DevTools (F12) → Console. Look for [ChemAuth:firebase] vs [ChemAuth:session].
+ * Diagnosis: abre DevTools (F12) → Console. Busca [ChemAuth:firebase] vs [ChemAuth:session].
  *
- * Institutional email rules from #chem-login-email-rules-json run before any Firebase call.
+ * Reglas de correo institucional desde #chem-login-email-rules-json se ejecutan antes de cualquier llamada a Firebase.
  */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {
@@ -13,29 +13,29 @@ import {
     signInWithEmailAndPassword,
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
-/** @returns {string|null} null = unknown code (caller may show code + console) */
+/** @returns {string|null} null = codigo desconocido (el llamador puede mostrar codigo + consola) */
 function mapFirebaseAuthError(code) {
     switch (code) {
         case 'auth/email-already-in-use':
-            return 'That email is already registered. Try Sign in instead.';
+            return 'Ese correo ya esta registrado. Intenta Ingresar en su lugar.';
         case 'auth/invalid-email':
-            return 'Invalid email address.';
+            return 'Correo electronico invalido.';
         case 'auth/weak-password':
-            return 'Password is too weak (use at least 6 characters).';
+            return 'La contraseña es demasiado debil (usa al menos 6 caracteres).';
         case 'auth/user-not-found':
         case 'auth/wrong-password':
         case 'auth/invalid-credential':
-            return 'Wrong email or password, or use Create account if you are new.';
+            return 'Correo o contraseña incorrectos, o usa Crear cuenta si eres nuevo.';
         case 'auth/too-many-requests':
-            return 'Too many attempts. Try again later.';
+            return 'Demasiados intentos. Intenta de nuevo mas tarde.';
         case 'auth/network-request-failed':
-            return 'Network error talking to Firebase. Check your connection and try again.';
+            return 'Error de red hablando con Firebase. Verifica tu conexion y vuelve a intentarlo.';
         case 'auth/operation-not-allowed':
-            return 'Email/password sign-in is disabled in the Firebase project (Console → Authentication → Sign-in method).';
+            return 'Ingreso por correo/contraseña esta deshabilitado en el proyecto de Firebase (Consola → Autenticacion → Metodo de ingreso).';
         case 'auth/invalid-api-key':
-            return 'Invalid Firebase web API key. Check CHEMCLASSIFY_FIREBASE_* env or FirebaseClienteWeb config.';
+            return 'Clave API web de Firebase invalida. Verifica CHEMCLASSIFY_FIREBASE_* env o FirebaseClienteWeb config.';
         case 'auth/configuration-not-found':
-            return 'Firebase Auth is not configured for this app (check Firebase project and web app registration).';
+            return 'Firebase Auth no esta configurado para esta app (verifica el proyecto de Firebase y la registracion de la app web).';
         default:
             return null;
     }
@@ -44,7 +44,7 @@ function mapFirebaseAuthError(code) {
 async function postIdTokenToFlask(idToken) {
     const loginUrl = document.getElementById('chem-login-form')?.getAttribute('data-login-url');
     if (!loginUrl) {
-        throw new Error('Missing login URL');
+        throw new Error('Falta la URL de ingreso');
     }
     const res = await fetch(loginUrl, {
         method: 'POST',
@@ -61,17 +61,17 @@ async function postIdTokenToFlask(idToken) {
             serverBody: data,
                 hint:
                 res.status === 400
-                    ? 'Server rejected the request (e.g. token or policy).'
-                    : 'Token rejected or server error.',
+                    ? 'El servidor rechazo la solicitud (ej. token o politica).'
+                    : 'Token rechazado o error del servidor.',
         });
-        throw new Error(data.error || res.statusText || 'Server rejected the session (HTTP ' + res.status + ').');
+        throw new Error(data.error || res.statusText || 'El servidor rechazo la sesion (HTTP ' + res.status + ').');
     }
     if (data.redirect) {
         window.location.assign(data.redirect);
         return;
     }
     console.error('[ChemAuth:session]', { unexpected: true, data });
-    throw new Error('Unexpected server response (no redirect).');
+    throw new Error('Respuesta del servidor inesperada (no redirigido).');
 }
 
 /**
@@ -112,7 +112,7 @@ function dominioInstitucionalPermitido(dominioTrasArroba, dominioPermitido, perm
  */
 function validarIdentificadorCuentaCliente(cuenta, rules) {
     if (!rules || !rules.ejemploCorreo || !rules.dominioPermitido) {
-        return 'Missing email validation rules from server.';
+        return 'Faltan las reglas de validacion de correo del servidor.';
     }
     const ejemplo = rules.ejemploCorreo;
     const dominioCfg = rules.dominioPermitido;
@@ -124,25 +124,25 @@ function validarIdentificadorCuentaCliente(cuenta, rules) {
     }
 
     if (cuenta.indexOf('@') === -1) {
-        return 'Ingresa un correo con @ y tu dominio institucional (e.g. ' + ejemplo + ').';
+        return 'Ingresa un correo con @ y tu dominio institucional (ej. ' + ejemplo + ').';
     }
     if (cuenta.split('@').length - 1 !== 1) {
-        return 'Ingresa solo un @ en el correo (e.g. ' + ejemplo + ').';
+        return 'Ingresa solo un @ en el correo (ej. ' + ejemplo + ').';
     }
     const parts = cuenta.split('@');
     const local = parts[0];
     const domain = parts.slice(1).join('@');
     if (!local) {
-        return 'Ingresa el nombre del correo (e.g. ' + ejemplo + ').';
+        return 'Ingresa el nombre del correo (ej. ' + ejemplo + ').';
     }
     if (!domain) {
-        return 'Ingresa el dominio del correo despues del @ (e.g. @' + dominioCfg + ').';
+        return 'Ingresa el dominio del correo despues del @ (ej. @' + dominioCfg + ').';
     }
     if (domain.indexOf('.') === -1) {
-        return 'El dominio despues del @ debe tener nombre y extension (e.g. .edu).';
+        return 'El dominio despues del @ debe tener nombre y extension (ej. .edu).';
     }
     if (!dominioInstitucionalPermitido(domain, dominioCfg, permitirSub)) {
-        return 'Utiliza solo cuentas institucionales (e.g. ' + ejemplo + ').';
+        return 'Utiliza solo cuentas institucionales (ej. ' + ejemplo + ').';
     }
     return null;
 }
@@ -169,7 +169,7 @@ function userFacingMessage(mode, err) {
         if (mapped) {
             return mapped;
         }
-        return 'Firebase: ' + code + ' (see browser console F12 for [ChemAuth:firebase]).';
+        return 'Firebase: ' + code + ' (ver consola del navegador F12 para [ChemAuth:firebase]).';
     }
 
     // fetch() / server errors are plain Error with message only
@@ -177,7 +177,7 @@ function userFacingMessage(mode, err) {
         return err.message;
     }
 
-    return 'Could not complete ' + (mode === 'create' ? 'registration' : 'sign-in') + '. See console (F12).';
+    return 'No se pudo completar ' + (mode === 'create' ? 'registro' : 'ingreso') + '. Ver consola (F12).';
 }
 
 function init() {
@@ -211,7 +211,7 @@ function init() {
         const email = (emailEl.value || '').trim();
         const password = passEl.value || '';
         if (!email || !password) {
-            window.SistemasErrores?.mostrar('Please enter both email and password.');
+            window.SistemasErrores?.mostrar('Por favor, ingresa ambos correos y contraseñas.');
             return;
         }
         const identError = validarIdentificadorCuentaCliente(email, emailRules);

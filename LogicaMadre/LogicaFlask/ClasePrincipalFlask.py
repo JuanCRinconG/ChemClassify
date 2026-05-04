@@ -53,15 +53,15 @@ def login():
         payload = request.get_json(silent=True) or {}
         id_token = (payload.get('idToken') or '').strip()
         if not id_token:
-            return jsonify(error='Missing idToken.'), 400
+            return jsonify(error='Falta el idToken.'), 400
         try:
             decoded = auth.verify_id_token(id_token)
         except Exception:
-            return jsonify(error='Invalid or expired sign-in. Please try again.'), 401
+            return jsonify(error='Ingreso inválido o expirado. Por favor, inténtalo de nuevo.'), 401
 
         email = (decoded.get('email') or '').strip()
         if not email:
-            return jsonify(error='Your account has no email on record.'), 400
+            return jsonify(error='Tu cuenta no tiene un correo electrónico registrado.'), 400
 
         ident_error = validar_identificador_cuenta(email)
         if ident_error:
@@ -86,7 +86,7 @@ def login():
                 error_message = ident_error
             else:
                 error_message = (
-                    'Use the Sign in or Create account buttons so Firebase can verify your password.'
+                    'Use los botones de Ingresar o Crear cuenta para que Firebase pueda verificar tu contraseña.'
                 )
 
     if request.method == 'GET' and session.get('uid'):
@@ -121,7 +121,7 @@ def enviar_correo_prueba_vista():
 
     destinatario = (session.get('email') or '').strip()
     if not destinatario:
-        flash('No email address in your session.', 'error')
+        flash('No existe un correo en la sesión.', 'error')
         return redirect(url_for('principal'))
 
     try:
@@ -129,9 +129,9 @@ def enviar_correo_prueba_vista():
     except ErrorEnvioCorreo as exc:
         flash(str(exc), 'error')
     except Exception:
-        flash('Unexpected error while sending email.', 'error')
+        flash('Error al enviar el correo de prueba.', 'error')
     else:
-        flash(f'Test email sent to {destinatario}.', 'success')
+        flash(f'Correo de prueba enviado a {destinatario}.', 'success')
 
     return redirect(url_for('principal'))
 

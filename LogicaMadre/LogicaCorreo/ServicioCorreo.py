@@ -42,19 +42,22 @@ def enviar_correo_prueba(destinatario: str) -> None:
 
     if not user or not password:
         raise ErrorEnvioCorreo(
-            'SMTP not configured: set SMTP_USER and SMTP_PASSWORD in .env '
-            '(same folder as main.py; see env.graph.example).'
+            'SMTP no esta configurado: pon SMTP_USER y SMTP_PASSWORD en .env '
+            '(misma carpeta que main.py; ver env.graph.example).'
         )
     if not sender:
-        raise ErrorEnvioCorreo('SMTP: sender is empty (set SMTP_FROM or SMTP_USER).')
+        raise ErrorEnvioCorreo('SMTP: sender esta vacio (pon SMTP_FROM o SMTP_USER).')
+
+    
+    ## Si toda la configuracion de SMTP es correcta, se envía el correo de prueba:
 
     msg = EmailMessage()
-    msg['Subject'] = 'ChemClassify — test email'
+    msg['Subject'] = 'ChemClassify — correo de prueba'
     msg['From'] = sender
     msg['To'] = destinatario
     msg.set_content(
-        'This is a test message from ChemClassify.\n\n'
-        'If you received this email, SMTP is configured correctly.'
+        'Este es un correo de prueba de ChemClassify.\n\n'
+        'Si recibiste este correo, SMTP esta configurado correctamente.'
     )
 
     ctx = ssl.create_default_context()
@@ -85,10 +88,10 @@ def enviar_correo_prueba(destinatario: str) -> None:
                 detalle += f' {err}'
             detalle += ']'
         raise ErrorEnvioCorreo(
-            'SMTP authentication failed. Use the same Google account in SMTP_USER as the one '
-            'where you created the app password (16 chars, no spaces). Enable 2-Step Verification. '
-            'If SMTP_* was ever set in Windows / IDE environment, stale values are ignored now '
+            'Fallo la autenticacion de SMTP. Usa la misma cuenta de Google en SMTP_USER como la '
+            'donde creaste la contraseña de aplicacion (16 chars, no espacios). Habilita la Verificacion en 2 pasos. '
+            'Si SMTP_* fue alguna vez configurado en Windows / IDE, los valores antiguos se ignoran ahora '
             f'(`.env` wins).{detalle}'
         ) from exc
     except smtplib.SMTPException as exc:
-        raise ErrorEnvioCorreo(f'SMTP error: {exc}') from exc
+        raise ErrorEnvioCorreo(f'Error de SMTP: {exc}') from exc
