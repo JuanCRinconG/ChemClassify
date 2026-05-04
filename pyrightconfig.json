@@ -1,0 +1,6 @@
+{
+  "venvPath": ".",
+  "venv": "PGC_Enviroment",
+  "pythonVersion": "3.10",
+  "typeCheckingMode": "basic"
+}

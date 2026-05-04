@@ -1,4 +1,7 @@
+.env
 CredencialesFirebase/
 node_modules/
 PGC_Enviroment/
 **/__pycache__/
+RefDocumentBackend/
+RefDocumentFrontend/

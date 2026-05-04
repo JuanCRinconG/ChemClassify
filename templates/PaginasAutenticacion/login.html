@@ -11,7 +11,13 @@
     <div class="login-container">
         <h2>Login</h2>
 
-        <form method="POST" action="{{ url_for('login') }}" novalidate>
+        <form
+            id="chem-login-form"
+            method="POST"
+            action="{{ url_for('login') }}"
+            data-login-url="{{ url_for('login') }}"
+            novalidate
+        >
             <input
                 type="text"
                 id="accountName"
@@ -30,7 +36,8 @@
                 placeholder="Password"
                 autocomplete="current-password"
             >
-            <button type="submit" class="login-button">Login</button>
+            <button type="button" id="chem-btn-signin" class="login-button">Sign in</button>
+            <button type="button" id="chem-btn-create" class="login-button" style="margin-top: 12px; background: #2c5282;">Create account</button>
         </form>
 
         {% if success_message %}
@@ -41,6 +48,9 @@
     {% include 'Sistemas/fragmento_alerta_error.html' %}
 
     <script type="application/json" id="sistemas-error-inicial-json">{{ error_message|tojson }}</script>
+    <script type="application/json" id="chem-firebase-config-json">{{ firebase_web_config|tojson }}</script>
+    <script type="application/json" id="chem-login-email-rules-json">{{ login_email_rules|tojson }}</script>
     <script src="{{ url_for('static', filename='Sistemas/alerta_error_usuario.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='PaginasAutenticacion/login_firebase.js') }}"></script>
 </body>
 </html>
